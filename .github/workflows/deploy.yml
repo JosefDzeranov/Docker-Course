@@ -1,0 +1,11 @@
+on: push
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - run: docker login -u ironprogrammer -p ${{secrets.DOCKERHUB_TOKEN}}
+            - run: docker build -t ironprogrammer/reviews-service:latest ./reviews-service
+            - run: docker push ironprogrammer/reviews-service:latest
+            
