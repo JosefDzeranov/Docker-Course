@@ -2,10 +2,12 @@ services:
   db:
     image: postgres:17-alpine
     environment:
-      POSTGRES_PASSWORD: secret
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: reviews
+    ports:
+      - "5432:5432"
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data2
     healthcheck:
       # Проверяем, что база готова принимать подключения
       test: ["CMD-SHELL", "pg_isready -U postgres -d reviews"]
@@ -14,9 +16,11 @@ services:
       retries: 5
 
   api:
-    build: .
+    image: ironprogrammer/reviews-service-api-hub
     ports:
       - "8080:8080"
+    environment:
+      ConnectionStrings__Postgres: ${ConnectionStrings__Postgres}
     depends_on:
       db:
         # Ждем не просто старта контейнера, а готовности базы (healthcheck прошел)
