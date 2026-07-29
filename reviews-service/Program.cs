@@ -31,6 +31,6 @@ app.MapOpenApi();
 app.MapScalarApiReference();
 
 // Простой healthcheck, удобно проверить что сервис жив.
-app.MapGet("/health", () => Results.Ok("healthy2222"));
+app.MapGet("/health", () => Results.Ok("healthy333"));
 
 app.Run();

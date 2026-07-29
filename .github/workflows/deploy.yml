@@ -1,14 +1,23 @@
 on: push
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
     build:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - run: docker login -u ironprogrammer -p ${{secrets.DOCKERHUB_TOKEN}}
-            - run: docker build -t ironprogrammer/reviews-service:latest ./reviews-service
-            - run: docker push ironprogrammer/reviews-service:latest
+            - uses: docker/login-action@v3
+              with:
+                registry: ghcr.io
+                username: ${{ github.actor }}
+                password: ${{ secrets.GITHUB_TOKEN }}
+            - run: docker build -t ghcr.io/josefdzeranov/reviews-service:latest ./reviews-service
+            - run: docker push ghcr.io/josefdzeranov/reviews-service:latest
     
+            
     deploy:
       needs: build
       runs-on: ubuntu-latest
