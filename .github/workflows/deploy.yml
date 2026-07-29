@@ -13,7 +13,7 @@ jobs:
               with:
                 registry: ghcr.io
                 username: ${{ github.actor }}
-                password: ${{ secrets.GITHUB_TOKEN }}
+                password: ${{ github.token }}
             - run: docker build -t ghcr.io/josefdzeranov/reviews-service:latest ./reviews-service
             - run: docker push ghcr.io/josefdzeranov/reviews-service:latest
     
